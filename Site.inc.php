@@ -50,7 +50,7 @@ class Site
 
 		$req = $this->clean_path();
 
-		// match?
+		// match page?
 		if(array_key_exists($req, $this->navindex)) {
 			$this->page = $this->navindex[$req];
       $this->loaded_path = $req;
@@ -84,9 +84,6 @@ class Site
 					'path' => $this->url_for($try)
 				));
 		}
-
-		//error_log(print_r($harvest));
-		//exit();
 
 		return $harvest;
 	}
@@ -163,7 +160,7 @@ class Site
 			$path = '/';
 
 		if(substr($path, 0, 1) != '/')
-			trigger_error("path must start with '/'");
+			trigger_error("path must start with '/'", E_USER_ERROR);
 
 		if(array_key_exists($path, $this->navindex))
 			trigger_error("page '$path' is allready mapped as a page", E_USER_ERROR);
