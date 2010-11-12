@@ -21,32 +21,38 @@
 
 class Page
 {
-	public $title;
-	public $opts = array();
+  public $title;
+  public $opts = array();
 
-	function __construct($title, $opts = NULL) {
+  function __construct($title, $opts = NULL) {
 
-		if ($opts != NULL && is_array($opts))
-			$this->opts = $opts;
+    if ($opts != NULL && is_array($opts))
+      $this->opts = $opts;
 
-		if (!array_key_exists('template', $opts))
-			trigger_error("template is a required option!", E_USER_ERROR);
+    if (!array_key_exists('template', $opts))
+      trigger_error("template is a required option!", E_USER_ERROR);
 
-		$this->title = $title;
-	}
+    $this->title = $title;
+  }
 
-	function title() {
-		return $this->title;
-	}
-   
-	function template() {
-		return 'templates/' . $this->opts['template'] . ".php";
-	}
+  function title() {
+    return $this->title;
+  }
 
-	function layout() {
-		return (array_key_exists('layout', $this->opts)) ? $this->opts['layout'] : 'templates/layout.php';
-	}
+  function template() {
+    return $this->template_path( $this->opts['template'] );
+  }
 
+  function layout() {
+    return (array_key_exists('layout', $this->opts)) ? $this->template_path($this->opts['layout']) : $this->template_path('layout.php');
+  }
+
+  private function template_path($template) {
+    if ( substr($template, -4) == '.php' )
+      return 'templates/' . $template;
+    
+    return 'templates/' . $template . '.php';
+  }
 }
 
 class Site
